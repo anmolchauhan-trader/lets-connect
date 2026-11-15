@@ -14,14 +14,17 @@
       body: JSON.stringify({ email: data.email, password: data.password })
     });
    
-    let response= await res.json();
+    let response=res;
+    console.log(response);
+    
    
     if (!response.ok) {
       error.textContent = 'Login failed. Please check your credentials.';
-      return;}}
-      catch(e){
+      return;}
+          return response; }
+      catch(error){
         error.textContent = 'An error occurred. Please try again.';
         
       }
-     return response; 
+     
     }

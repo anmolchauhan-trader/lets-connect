@@ -12,7 +12,15 @@ function setAuthCookie(res, uid) {
     expiresIn: "7d",
   });
   res.cookie("token", token, {
+    
     httpOnly: true,
+    sameSite: "lax",
+    secure: isProd,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+
+    res.cookie("uid", String(uid), {
+    httpOnly: false,
     sameSite: "lax",
     secure: isProd,
     maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -20,7 +28,7 @@ function setAuthCookie(res, uid) {
 }
 
 router.post("/login", async (req, res) => {
-
+ 
  
   const email = req.body?.email?.trim().toLowerCase();
   const password = req.body?.password;
@@ -42,6 +50,7 @@ router.post("/login", async (req, res) => {
         "INSERT INTO newusers (email, password) VALUES ($1, $2) RETURNING uid",
         [email, hash]
       );
+     
       setAuthCookie(res, created.rows[0].uid);
       return res.redirect(303, "/dashboard");
     }

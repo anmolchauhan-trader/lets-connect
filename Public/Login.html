@@ -149,7 +149,7 @@
    
    let response= UsingApi({ email: email.value, password: password.value }, '/api/login', 'POST');
    if(response.ok)   windows.location.href="/dashboard";
-   else  console.log({response});
+   console.log({response});
    
    
    

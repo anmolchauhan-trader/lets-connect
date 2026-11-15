@@ -68,29 +68,101 @@
 <body>
   <form id="searchBox" autocomplete="off">
     <input type="text" id="searchInput" placeholder="Add new friend..." />
-    <button type="submit">Add +</button>
+    <button type="submit" id="submit-button" >Add +</button>
      <a href="../index.html" class="add-user-btn"  type="submit">Add +</a>
   </form>
 
   <div class="list" id="history">
-    <p>Item 1</p>
-    <p>Item 2</p>
-    <p>Item 3</p>
-    <p>Item 4</p>
-    <p>Item 5</p>
-    <p>Item 6</p>
-    <p>Item 7</p>
-    <p>Item 8</p>
-    <p>Item 9</p>
-    <p>Item 10</p>
-        <p>Item 10</p>
+   <ul id="friendList"></ul>
   </div>
 </body>
-<script src="./functioning.js">
+
 
 </script>
 <script>
 
+   let uid=document.cookie;
+  uid=uid.split("=");
+  console.log(uid[1]);
+
+ const friendList = document.getElementById("friendList");
+
+function renderFriends(friends) {
+  friendList.innerHTML = ""; // clear the old list first
+
+  if (!friends || friends.length === 0) {
+    const li = document.createElement("li");
+    li.textContent = "No friends yet.";
+    friendList.appendChild(li);
+    return;
+  }
+
+  friends.forEach((friend) => {
+    const li = document.createElement("li");
+    li.textContent = friend; // textContent is safe; innerHTML with user data is not
+    friendList.appendChild(li);
+  });
+}
+
+
+
+
+
+document.addEventListener("DOMContentLoaded",async()=>{
+ 
+try{
+
+  const res=await fetch('/friend/GetFriends',{
+      method:'POST',
+      headers:{
+        'Content-Type': 'application/json'
+      },
+      body:JSON.stringify({ id: uid[1] })
+    });
+   
+    let response= await res.json();
+    renderFriends(response.friends);
+   
+    
+   
+    if (!response.ok) {
+      error.textContent = 'Login failed. Please check your credentials.';
+      return;}
+          return response; }
+      catch(error){
+        error.textContent = 'An error occurred. Please try again.';
+        
+      }
+  
+});
+
+
+document.querySelector("#submit-button").addEventListener("click",async()=>{
+  try{
+
+  const res=await fetch('/friend/AddFriends',{
+      method:'POST',
+      headers:{
+        'Content-Type': 'application/json'
+      },
+      body:JSON.stringify({ id:uid[1] ,email:"anmol@gmail.com" })
+    });
+   
+    let response=res.json();
+    console.log(response.friends);
+    
+   
+    if (!response.ok) {
+      error.textContent = 'Login failed. Please check your credentials.';
+      return;}
+          return response; }
+      catch(error){
+        error.textContent = 'An error occurred. Please try again.';
+        
+      }
+  
+
+})
   
 
  

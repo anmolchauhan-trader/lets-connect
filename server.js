@@ -30,8 +30,9 @@ app.use(express.urlencoded({ extended: true }));   // needed for HTML forms
 app.use(cookieParser());
 app.use(express.static(publicDir));
 
-app.use(FriendRoutes);
+
 app.use("/api", loginRoutes);
+app.use("/friend",FriendRoutes);
 app.use("/ws", liveConnector);
 
 app.get("/", (req, res) => {
@@ -43,7 +44,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(publicDir, "Login.html"));
 });
 
-app.get("/dashboard", requireAuth, (req, res) => {
+app.get("/dashboard/", requireAuth, (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));   // stays OUTSIDE Public/
 });
 
