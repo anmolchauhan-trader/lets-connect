@@ -9,7 +9,7 @@ import { requireAuth } from "./auth.js";
 import rateLimit from "express-rate-limit";
 import liveConnector,{InitiateWebsocket} from "./LiveConnect.js";
 import http from "http";
-
+import FriendRoutes from "./getfriends.js"
 
 
 if (!process.env.JWT_SECRET) throw new Error("JWT_SECRET is not set");
@@ -30,6 +30,7 @@ app.use(express.urlencoded({ extended: true }));   // needed for HTML forms
 app.use(cookieParser());
 app.use(express.static(publicDir));
 
+app.use(FriendRoutes);
 app.use("/api", loginRoutes);
 app.use("/ws", liveConnector);
 
