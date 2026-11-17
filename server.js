@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 import loginRoutes from "./login.js";
 import { requireAuth } from "./auth.js";
 import rateLimit from "express-rate-limit";
-import liveConnector,{InitiateWebsocket} from "./LiveConnect.js";
+import {InitiateWebsocket} from "./LiveConnect.js";
 import http from "http";
 import FriendRoutes from "./getfriends.js"
 
@@ -33,7 +33,7 @@ app.use(express.static(publicDir));
 
 app.use("/api", loginRoutes);
 app.use("/friend",FriendRoutes);
-app.use("/ws", liveConnector);
+
 
 app.get("/", (req, res) => {
   // already logged in? skip the login page

@@ -39,18 +39,17 @@ function getuserLocation(){
 
 
 
-
-
-const ws= new WebSocket({port:3000});
+const protocol = location.protocol === "https:" ? "wss" : "ws";
+const ws = new WebSocket(`${protocol}://${location.host}/ws`);
  
   ws.onopen=async()=>{
-    const data= await getuserLocation();
-    ws.send(JSON.stringify(data));
-   
+  //  const data= await getuserLocation();
+  //  ws.send(JSON.stringify(data));
+ console.log("conection opened");
   }
 
    ws.onmessage=(event)=>{
-   UsersLocation.push(new LocationCoords(event.data.longitude,event.data.latitude));
+   //UsersLocation.push(new LocationCoords(event.data.longitude,event.data.latitude));
     console.log(event.data);
   }
     
